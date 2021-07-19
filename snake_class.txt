@@ -1,0 +1,340 @@
+"""File for both initiation and Main Snake Class.
+"""
+
+
+class Initiation:
+
+    """
+    Snake initiation.
+    Attributes:
+    -----------------
+        snake_head : tuple(int, int)
+            x,y of the snake head.
+
+        snake_size : tuple(int, int)
+            The size of the snake.
+
+        snake_colour : tuple(int, int, int)
+            r,g,b of the snake.
+
+    Methods:
+    -----------------
+        get_coordinates():
+             To get the coordinates of the head.
+
+        get_size():
+            Returns the size of snake.
+
+        get_colour():
+            Returns the colour of the snake.
+    """
+
+    def __init__(self, snake_head, snake_size, snake_colour):
+
+        """Initializing  the snake initiator.
+
+        Parameters:
+        ------------------------------------------
+        snake_head : (int,int)
+            x, y coordinates for the position of top left corner.
+
+        snake__size : (int, int)
+            Snake size
+
+        colour : (int, int, int)
+            RGB colour code for snake colour
+        """
+
+        self.snake_head = snake_head
+        self.snake_size = snake_size
+        self.snake_colour = snake_colour
+
+    def get_coordinates(self):
+
+        """
+        For coordinates.
+
+        Return: tuple(int, int)
+            The x- and y-coordinates for the snake head.
+
+        """
+        return self.snake_head
+
+    def get_size(self):
+
+        """
+        For size.
+
+        Returns: tuple(int, int)
+            Rectangle width and height
+        """
+
+        return self.snake_size
+
+    def get_colour(self):
+
+        """
+        For colour.
+
+        Returns: tuple(int, int, int)
+            To get triplet of values between 0 and 255 respectively to the r, g, b values of rectangle
+        """
+        return self.snake_colour
+
+
+class Snake:
+
+    """
+    Main snake class to run all the functions .
+
+    Attributes:
+    -----------------
+        snake_size : tuple(int, int)
+            Snake size.
+
+        snake_colour : tuple(int, int, int)
+            Snake colour.
+
+        snake_length : list(heads of every snake subpart by order)
+             head key list by order.
+
+    Methods:
+    -----------------
+        get_head():
+            For the head of snake.
+
+        grow():
+            For growth of snake.
+
+        move_left():
+           For moving the head of snake to left.
+            Follows every step.
+
+        move_right():
+            For moving the head of snake to right.
+            Follows every step.
+
+        move_up():
+            For moving the head of snake to up.
+            Follows every step.
+
+        move_down():
+            For moving the head of the snake to down.
+            Follows every step.
+
+        check_collision_with_fruit(top_left, bottom_right):
+            Checks the collision with given fruit coordinates.
+
+        inside_bounds(top_left, bottom_right):
+            Checks the bounds of the snake.
+
+        check_collision(top_left, bottom_right):
+            Checks the collision with given object coordinates.
+
+        __iter__():
+            For initializing the initiator.
+
+        __next__():
+            Returns the initiator for every tuple.
+
+
+    """
+
+    def __init__(self, snake_head, snake_size, snake_colour):
+
+        """Initializing the snake.
+        Parameters:
+        ------------------------------------------
+
+        snake_head : (int, int)
+            The x- and y-coordinates for the top left corner of the rectangle
+
+        snake_size : (int, int)
+            Width and height of the snake block.
+
+        snake_colour : (int, int, int)
+           A triplet of values between 0 and 255 respectively to the r, g, b value of the rectangles.
+
+        count : int
+            Initializing the initiator counter.
+
+        """
+
+        self.snake_size = snake_size
+        self.snake_colour = snake_colour
+        self.count = 0
+        self.snake_length = []
+        self.snake_length.append(snake_head)
+
+    def get_head(self):
+
+        """
+        Returns the snake head.
+
+        Returns: tuple
+            Tuple to top snake left corner.
+        """
+
+        return (self.snake_length[0][0], self.snake_length[0][1])
+
+    def grow(self):
+
+        """
+        Adding a tuple to snake_length with last tuple.
+
+        """
+        self.snake_length.append(self.snake_length[-1])
+
+    def move_left(self):
+
+        """
+        For moving the snake's head to left.
+        Follow the tuples to next
+
+        """
+        prev_head = self.get_head()
+        for i in range(len(self.snake_length) - 1, 0, -1):
+            self.snake_length[i] = self.snake_length[i - 1]
+        self.snake_length[0] = (prev_head[0] - self.snake_size[0], prev_head[1])
+
+    def move_right(self):
+
+        """
+
+        For moving the snake's head to right.
+        Follow the tuples to next
+
+        """
+        prev_head = self.get_head()
+        for i in range(len(self.snake_length) - 1, 0, -1):
+            self.snake_length[i] = self.snake_length[i - 1]
+        self.snake_length[0] = (prev_head[0] + self.snake_size[0], prev_head[1])
+
+    def move_up(self):
+
+        """
+        For moving the snake's head to up.
+        Follow the tuples to next
+
+        """
+        prev_head = self.get_head()
+        for i in range(len(self.snake_length) - 1, 0, -1):
+            self.snake_length[i] = self.snake_length[i - 1]
+        self.snake_length[0] = (prev_head[0], prev_head[1] - self.snake_size[1])
+
+    def move_down(self):
+
+        """
+        For moving the snake's head to down.
+        Follow the tuples to next
+
+        """
+        prev_head = self.get_head()
+        for i in range(len(self.snake_length) - 1, 0, -1):
+            self.snake_length[i] = self.snake_length[i - 1]
+        self.snake_length[0] = (prev_head[0], prev_head[1] + self.snake_size[1])
+
+    def check_collision_with_self(self):
+
+        """
+        Checks collision with self and also to any of the tuples.
+
+        Return: bool
+            True: If it collides with self
+            False: If it not Collides with self
+        """
+        for i in range(1, len(self.snake_length)-1):
+            if self.snake_length[0] == self.snake_length[i]:
+                return True
+        return False
+
+    def check_collision_with_fruit(self, top_left, bottom_right):
+
+        """
+        It checks collision with fruit coordinates.
+
+        Parameters:
+            top_left : tuple(int,int)
+            bottom_right : tuple(int,int)
+
+        Return: bool
+            True: If it collides with fruit.
+            False: If it not Collides with fruit.
+
+        """
+        if self.snake_length[0][0] == top_left[0] and self.snake_length[0][1] == top_left[1] and\
+                self.snake_size[1] >= bottom_right[1] - top_left[1]:
+            return True
+        return False
+
+    def inside_bounds(self, top_left, bottom_right):
+
+        """
+        Checks whether snake is in inside given coordinates or not.
+
+        Parameters:
+            top_left : tuple(int,int)
+            bottom_right : tuple(int,int)
+
+        Return: bool
+            True: If it is in inside bounds
+            False:If it is not in inside bounds
+
+        """
+
+        while top_left[1] <= self.snake_length[0][1] <= bottom_right[1] and \
+                top_left[0] <= self.snake_length[0][0] + self.snake_size[0] <= bottom_right[0]:
+            while top_left[1] <= self.snake_length[0][1] + self.snake_size[1] <= bottom_right[1] and \
+                    top_left[0] <= self.snake_length[0][0] + self.snake_size[0] <= bottom_right[0]:
+                return True
+                break
+            break
+        return False
+
+    def check_collision(self, top_left, bottom_right):
+
+        """
+        Check collision with given coordinates.
+
+        Parameters:
+            top_left : tuple(int,int)
+            bottom_right : tuple(int,int)
+
+        Return: bool
+            True: If collision happens
+            False:If collision does not happens.
+
+        """
+        collision = False
+        if top_left == self.snake_length[0]:
+            collision = True
+        for i in range(0, len(self.snake_length)-1):
+            while top_left[0] < self.snake_length[i][0] < bottom_right[0] and \
+                    top_left[1] < self.snake_length[i][1] + self.snake_size[1] < bottom_right[1]:
+                collision = True
+                break
+            while top_left[0] < self.snake_length[i][0] < bottom_right[0] and \
+                    top_left[1] < self.snake_length[i][1] < bottom_right[1]:
+                collision = True
+                break
+        return collision
+
+    def __iter__(self):
+
+        """
+        Initializing the iterator.
+        """
+
+        self.count = 0
+        return self
+
+    def __next__(self):
+
+        """
+        Returns the Iterator class for every tuple.
+        Return: Iterator of every tuple.
+        """
+        if self.count < len(self.snake_length):
+            self.count += 1
+            return Initiation(self.snake_length[self.count-1], self.snake_size, self.snake_colour)
+        raise StopIteration
